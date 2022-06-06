@@ -633,7 +633,7 @@ glue_tasks_num_labels = {
     "dna690":2,
     "dnapair":2,
     "dnasplice":3,
-    "sgRNA": 1,
+    "sgrna": 1,
 }
 
 glue_processors = {
@@ -651,7 +651,7 @@ glue_processors = {
     "dna690": DnaPromProcessor,
     "dnapair": DnaPairProcessor,
     "dnasplice": DnaSpliceProcessor,
-    "sgRNA": sgRNAProcessor,
+    "sgrna": sgRNAProcessor,
 }
 
 glue_output_modes = {
@@ -669,5 +669,5 @@ glue_output_modes = {
     "dna690": "classification",
     "dnapair": "classification",
     "dnasplice": "classification",
-    "sgRNA": "regression",
+    "sgrna": "regression",
 }
