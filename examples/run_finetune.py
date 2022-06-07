@@ -257,7 +257,7 @@ def train(args, train_dataset, model, tokenizer):
     stop_count = 0
 
     for _ in train_iterator:
-        epoch_iterator = tqdm(train_dataloader, desc="Iteration", disable=args.local_rank not in [-1, 0])
+        epoch_iterator = tqdm(train_dataloader, desc="Iteration", disable=args.local_rank not in [-1, 0], position=0, leave=True)
         for step, batch in enumerate(epoch_iterator):
 
             # Skip past any already trained steps if resuming training
@@ -409,7 +409,7 @@ def evaluate(args, model, tokenizer, prefix="", evaluate=True):
         preds = None
         probs = None
         out_label_ids = None
-        for batch in tqdm(eval_dataloader, desc="Evaluating"):
+        for batch in tqdm(eval_dataloader, desc="Evaluating", position=0, leave=True):
             model.eval()
             batch = tuple(t.to(args.device) for t in batch)
 
@@ -506,7 +506,7 @@ def predict(args, model, tokenizer, prefix=""):
         nb_pred_steps = 0
         preds = None
         out_label_ids = None
-        for batch in tqdm(pred_dataloader, desc="Predicting"):
+        for batch in tqdm(pred_dataloader, desc="Predicting", position=0, leave=True):
             model.eval()
             batch = tuple(t.to(args.device) for t in batch)
 
@@ -537,7 +537,6 @@ def predict(args, model, tokenizer, prefix=""):
             preds = np.argmax(preds, axis=1)
         elif args.output_mode == "regression":
             preds = np.squeeze(preds)
-            probs = None
 
         if args.do_ensemble_pred:
             result = compute_metrics(pred_task, preds, out_label_ids, probs[:,1])
@@ -576,12 +575,12 @@ def visualize(args, model, tokenizer, kmer, prefix=""):
     
 
     for pred_task, pred_output_dir in zip(pred_task_names, pred_outputs_dirs):
-        '''
+        """
         if args.task_name != "dna690":
             args.data_dir = os.path.join(args.visualize_data_dir, str(kmer))
         else:
             args.data_dir = deepcopy(args.visualize_data_dir).replace("/690", "/690/" + str(kmer))
-        '''
+        """
             
             
         evaluate = False if args.visualize_train else True
@@ -612,7 +611,7 @@ def visualize(args, model, tokenizer, kmer, prefix=""):
             preds = np.zeros([len(pred_dataset),3])
         attention_scores = np.zeros([len(pred_dataset), 12, args.max_seq_length, args.max_seq_length])
         
-        for index, batch in enumerate(tqdm(pred_dataloader, desc="Predicting")):
+        for index, batch in enumerate(tqdm(pred_dataloader, desc="Predicting", position=0, leave=True)):
             model.eval()
             batch = tuple(t.to(args.device) for t in batch)
 
