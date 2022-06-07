@@ -639,11 +639,14 @@ def visualize(args, model, tokenizer, kmer, prefix=""):
                 # else:
                 #     attention_scores = attention.cpu().numpy()
         
-        if args.task_name != "dnasplice":
-            probs = softmax(torch.tensor(preds, dtype=torch.float32))[:,1].numpy()
-        else:
-            probs = softmax(torch.tensor(preds, dtype=torch.float32)).numpy()
-
+        if args.output_mode == "classification":
+            if args.task_name != "dnasplice":
+                probs = softmax(torch.tensor(preds, dtype=torch.float32))[:,1].numpy()
+            else:
+                probs = softmax(torch.tensor(preds, dtype=torch.float32)).numpy()
+        elif args.output_mode == "regression":
+            probs = np.squeeze(preds)
+        
         scores = np.zeros([attention_scores.shape[0], attention_scores.shape[-1]])
 
         for index, attention_score in enumerate(attention_scores):
