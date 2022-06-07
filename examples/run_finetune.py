@@ -537,7 +537,7 @@ def predict(args, model, tokenizer, prefix=""):
             preds = np.argmax(preds, axis=1)
         elif args.output_mode == "regression":
             preds = np.squeeze(preds)
-            probs = None
+            probs = preds
 
         if args.do_ensemble_pred:
             result = compute_metrics(pred_task, preds, out_label_ids, probs[:,1])
