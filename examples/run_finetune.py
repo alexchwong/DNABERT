@@ -1182,12 +1182,13 @@ def main():
                 cache_dir=args.cache_dir if args.cache_dir else None,
             )
             config.output_attentions = True
-            model = model_class.from_pretrained(
-                checkpoint,
-                from_tf=bool(".ckpt" in args.model_name_or_path),
-                config=config,
-                cache_dir=args.cache_dir if args.cache_dir else None,
-            )
+            # model = model_class.from_pretrained(
+                # checkpoint,
+                # from_tf=bool(".ckpt" in args.model_name_or_path),
+                # config=config,
+                # cache_dir=args.cache_dir if args.cache_dir else None,
+            # )
+            model = model_class.from_pretrained(checkpoint)
             model.to(args.device)
             attention_scores, probs = visualize(args, model, tokenizer, prefix=prefix, kmer=kmer)
             if scores is not None:
